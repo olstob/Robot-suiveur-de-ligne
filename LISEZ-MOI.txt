@@ -1,0 +1,77 @@
+Équipe: 47-54
+Robot: Fidel Fiasco
+
+Le programme utilise les classes Pwm, Del et Can, déclarées et 
+implémentées dans leurs fichiers header et source respectifs.
+
+La fonction principale "main" se trouve dans le fichier "main.cpp" où 
+les fonctions verifierLuminosite, faireSon, lireDirection, 
+fairePointilles, faireIntersection, faireInstersectionTriangle et 
+suivreLigne sont implémentées.
+
+Note importante:
+Dans le fichier main, les commentaires du type "1 1 1 1 1" permettent
+d'indiquer quels bits doivent être lus pour entrer dans la boucle, if,
+etc. Un "x" signifie que le capteur à cette position n'est pas pris en
+compte.
+
+VerifierLuminosite:
+Cette fonction détermine si la luminosité est faible ou non, 
+c'est-à-dire si le robot est dans le tunnel ou non. Si c'est le cas, on 
+allume les dels rouge du breadbord connectées par le port A sur les 
+pins 3 et 4. Sinon, on les ferme.
+
+
+faireSon:
+Cette fonction prend une note MIDI en paramètre et envoit la fréquence 
+correspondante au speaker du robot. Une condition spéciale ferme le 
+speaker si on envoit 0 comme note MIDI.
+
+
+lireDirection:
+Cette fonction sauvegarde dans des variables booléennes les données que 
+le capteur Cytron LSS05 envoit au robot. Ainsi, les variables bit1, 
+bit2, bit3, bit4, bit5 représentent respectivement les capteurs de 
+gauche vers la droite et sont à true seulement lorsque le capteur 
+perçoit la ligne. 
+
+
+fairePointilles:
+Cette fonction contrôle le robot du moment où il vient de passer 
+les pointillés isolés jusqu'au moment où il passe le dernier pointillé,
+ou encore qu'il passe le coin en cas d'échec. Un booléen aFaitTriangle, 
+qui devient true après avoir fait l'intersection en triangle, est nécessaire 
+pour entrer dans cette fonction.
+Tant que le capteur capte la ligne, le robot doit la suivre. Dès qu'il
+voit le troisième trou, il émet le son et arrête quand il a
+
+
+faireIntersection:
+Cette fonction détermine la direction que le robot doit prendre en vérifiant 
+le tableau directions[] selon l'indice du compteur (ce compteur est initialisé 
+à 0 et s'incrémente après chaque intersection). Ensuite, le robot pivote et 
+avance jusqu'à retrouver la ligne et la suit avec les trois capteur du côté
+opposé. Par exemple, si le robot a tourné vers la droite, il va utiliser les capteurs
+de gauche, centre gauche et centre pour suivre la ligne et utiliser le capteur
+droite pour choisir la bonne branche à l'intersection.
+
+
+faireIntersectionTriangle:
+Cette fonction détermine la direction que le robot doit prendre, et pivote jusqu'à
+ce qu'aucun capteurs de voient la ligne. il revient ensuite sur la ligne et la suit,
+encore une fois centré sur le côté opposé. Lorsque la ligne est finie, le robot 
+tourne vers la ligne principale.
+
+
+suivreLigne: 
+C'est la fonction la plus importante pour le fonctionnement
+du robot. C'est à partir d'elle que les autres fonctions d'intersection sont appelées.
+En bref, cette fonction détermine quelle fonction appeler ou quelle action exécuter 
+dépendamment des valeurs de chaque bit du capteur.
+
+
+main:
+Cette fonction attend que les trois boutons aient été pesés,
+puis elle entre dans un while et n'en sort que quand le robot a
+fini le parcours. Dans ce while le robot lit continuellement lit continuellement les bits du capteur
+et l'intensité lumineuse et réagit en conséquence (avec la fontion suivreLigne).
